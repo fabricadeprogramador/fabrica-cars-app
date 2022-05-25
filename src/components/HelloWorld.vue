@@ -1,5 +1,11 @@
 <template>
+<<<<<<< HEAD
   <v-container> </v-container>
+=======
+  <v-container>
+    
+  </v-container>
+>>>>>>> afad390baedcd75b25924527d36f2a0a29a75ca2
 </template>
 
 <script>
