@@ -49,6 +49,11 @@
           titulo: "Home",
           icone: "mdi-home",
           rota: "/"
+        },
+        {
+          titulo: "Perfil",
+          icone: "mdi-account-edit",
+          rota: "/perfil"
         }
       ]
     }),
