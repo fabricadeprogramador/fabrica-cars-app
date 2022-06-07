@@ -29,9 +29,9 @@
       <v-icon @click="deslogar()">mdi-logout</v-icon>
     </v-app-bar>
 
-    <v-content class="ma-3">
+    <v-main class="ma-3">
       <router-view></router-view>
-    </v-content>
+    </v-main>
 
     <v-footer app>
       <span>Fábrica Cars &copy; - Fábrica de Programador 2022 - T37</span>

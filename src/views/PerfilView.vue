@@ -55,8 +55,15 @@
         </v-menu>
       </div>
 
+      <!-- TODO: Implementar endereço com busca por viaCEP -->
       <!-- ENDEREÇO -->
-      //TODO: FINALIZAR A PARTIR DAQUI
+      <v-text-field
+        v-model="perfil.endereco"
+        :rules="enderecoRules"
+        :counter="30"
+        label="Endereço"
+        required
+      ></v-text-field>
 
       <!-- E-MAIL -->
       <v-text-field
@@ -66,20 +73,18 @@
         required
       ></v-text-field>
 
-      <v-select
-        v-model="select"
-        :items="items"
-        :rules="[(v) => !!v || 'Item is required']"
-        label="Item"
-        required
-      ></v-select>
-
-      <v-checkbox
-        v-model="checkbox"
-        :rules="[(v) => !!v || 'You must agree to continue!']"
-        label="Do you agree?"
-        required
-      ></v-checkbox>
+      <!-- SENHA -->
+      <v-text-field
+        v-model="perfil.usuario.senha"
+        :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+        :rules="[senhaRules.required, senhaRules.min]"
+        :type="show ? 'text' : 'password'"
+        name="input-10-1"
+        label="Senha"
+        hint="Pelo menos 8 caracteres"
+        counter
+        @click:append="show = !show"
+      ></v-text-field>
 
       <v-btn :disabled="!valido" color="success" class="mr-4" @click="salvar">
         Salvar
@@ -97,16 +102,27 @@
       valido: true,
       menu: false,
       activePicker: null,
+      show: false,
       perfil: {
         dataNascimento: null,
+        endereco: "",
+        cpf: "",
+        nome: "",
         usuario: {
           email: "",
           senha: ""
-        }
+        },
+        compras: [],
+        favoritos: []
       },
       nomeRules: [
         (v) => !!v || "Nome é obrigatório",
         (v) => (v && v.length <= 20) || "Nome deve ter no máximo 20 caracteres"
+      ],
+      enderecoRules: [
+        (v) => !!v || "Endereço é obrigatório",
+        (v) =>
+          (v && v.length <= 30) || "Endereço deve ter no máximo 30 caracteres"
       ],
       cpfRules: [
         (v) => !!v || "CPF é obrigatório",
@@ -116,9 +132,10 @@
         (v) => !!v || "E-mail é obrigatório",
         (v) => /.+@.+\..+/.test(v) || "E-mail deve ser válido"
       ],
-      select: null,
-      items: ["Item 1", "Item 2", "Item 3", "Item 4"],
-      checkbox: false
+      senhaRules: {
+        required: (value) => !!value || "Senha obrigatória.",
+        min: (v) => v.length >= 8 || "Min 8 characters"
+      }
     }),
     watch: {
       menu(val) {
@@ -128,7 +145,18 @@
 
     methods: {
       reset() {
-        this.$refs.form.reset()
+        this.perfil = {
+          dataNascimento: null,
+          endereco: "",
+          cpf: "",
+          nome: "",
+          usuario: {
+            email: "",
+            senha: ""
+          },
+          compras: [],
+          favoritos: []
+        }
       },
       salvarData() {
         this.$refs.menu.save(this.formatar(this.perfil.dataNascimento))
