@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <v-form ref="form" v-model="valido">
+    <h1>Faça o seu cadastro</h1>
       <!-- NOME -->
       <v-text-field
         v-model="perfil.nome"
@@ -33,25 +34,14 @@
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
               v-model="perfil.dataNascimento"
+              type="date"
               label="Data de nascimento"
-              append-icon="mdi-calendar"
-              readonly
               v-bind="attrs"
               v-on="on"
+              required
+              :rules="dataRules"
             ></v-text-field>
           </template>
-          <v-date-picker
-            v-model="perfil.dataNascimento"
-            locale="pt-BR"
-            :active-picker.sync="activePicker"
-            :max="
-              new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-                .toISOString()
-                .substr(0, 10)
-            "
-            min="1950-01-01"
-            @change="salvarData"
-          ></v-date-picker>
         </v-menu>
       </div>
 
@@ -101,10 +91,9 @@
     data: () => ({
       valido: true,
       menu: false,
-      activePicker: null,
       show: false,
       perfil: {
-        dataNascimento: null,
+        dataNascimento: "",
         endereco: "",
         cpf: "",
         nome: "",
@@ -118,6 +107,9 @@
       nomeRules: [
         (v) => !!v || "Nome é obrigatório",
         (v) => (v && v.length <= 20) || "Nome deve ter no máximo 20 caracteres"
+      ],
+      dataRules: [
+        (v) => !!v || "Data de Nascimento é obrigatório",
       ],
       enderecoRules: [
         (v) => !!v || "Endereço é obrigatório",
@@ -137,16 +129,10 @@
         min: (v) => v.length >= 8 || "Min 8 characters"
       }
     }),
-    watch: {
-      menu(val) {
-        val && setTimeout(() => (this.activePicker = "YEAR"))
-      }
-    },
-
     methods: {
       reset() {
         this.perfil = {
-          dataNascimento: null,
+          dataNascimento: "",
           endereco: "",
           cpf: "",
           nome: "",
@@ -158,16 +144,28 @@
           favoritos: []
         }
       },
-      salvarData() {
-        this.$refs.menu.save(this.formatar(this.perfil.dataNascimento))
+      salvar() {
+        setTimeout(() => this.$router.push('/login'), 2000)
       },
-      salvar() {},
-      formatar() {
-        if (!this.perfil.dataNascimento) return null
-
-        const [ano, mes, dia] = this.perfil.dataNascimento.split("-")
-        return `${dia}/${mes}/${ano}`
-      }
     }
   }
 </script>
+
+<style scoped>
+form {
+    width: 90%;
+    margin: 20px auto;
+    background-color: rgb(242, 242, 242);
+    padding: 20px 30px;
+    border-radius: 8px;
+    border-top: 12px solid #fc9403;
+    text-align: center;
+}
+
+
+
+h1 {
+    margin: 10px;
+    text-align: center;
+}
+</style>

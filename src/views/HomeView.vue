@@ -1,10 +1,13 @@
 <template>
   <div class="home">
     <v-row class="mt-2">
-      <v-col cols="6" offset="6">
+      <v-col cols="12">
         <v-text-field
+          dark
           outlined
           flat
+          filled
+          style="font-size: 20px;"
           label="Buscar..."
           append-icon="mdi-magnify"
         ></v-text-field>
@@ -46,16 +49,17 @@
 
               <v-card-text> {{ produto.descricao }} </v-card-text>
 
-              <div style="display: block; text-align: right">
+              <div style="display: block; text-align: center">
                 <v-card-title> R$ {{ produto.preco.toFixed(2) }} </v-card-title>
                 <v-btn
                   color="primary"
                   text
-                  class="ma-2"
+                  class="ma-1"
+                  id="add"
                   @click="adicionarAoCarrinho(produto)"
                 >
                   Adicionar ao carrinho
-                  <v-icon right dark> mdi-cart </v-icon>
+                  <v-icon dark> mdi-cart </v-icon>
                 </v-btn>
               </div>
             </div>
@@ -182,3 +186,9 @@
     }
   }
 </script>
+
+<style scoped>
+#add {
+  font-size: 12px;
+}
+</style>
