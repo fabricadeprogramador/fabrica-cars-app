@@ -1,6 +1,6 @@
 <template>
     <div id="container">
-            <router-link to="/" id="logo-url"><img :src="logo" :alt="alt" id="logo"><h1 id="logo-texto">SPORTCARS</h1></router-link>
+            <router-link to="/" id="logo-url"><img :src="logo" :alt="alt" id="logo"><h1 id="logo-texto">FÁBRICA CARS</h1></router-link>
     </div>
 </template>
 <script>

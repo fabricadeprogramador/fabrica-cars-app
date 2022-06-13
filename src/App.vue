@@ -1,10 +1,10 @@
 <template>
   <v-app class="fundo">
     <v-navigation-drawer v-model="drawer"  
-      absolute
-      bottom
+      app
       temporary
-      color="grey darken-4"
+      class="grey darken-4"
+      dark
       >
       <v-list nav dense dark>
         <v-list-item

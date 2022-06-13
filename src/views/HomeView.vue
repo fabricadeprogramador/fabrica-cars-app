@@ -24,9 +24,9 @@
         <v-card class="mx-auto">
           <v-img :src="produto.imagem" height="200px"></v-img>
 
-          <v-card-title> {{ produto.modelo }} </v-card-title>
+          <v-card-title> {{ produto.marca }} {{ produto.modelo }} - {{ produto.ano }} </v-card-title>
 
-          <v-card-subtitle> {{ produto.marca }} </v-card-subtitle>
+          <v-card-subtitle> R${{ produto.preco.toFixed(2) }} </v-card-subtitle>
 
           <v-card-actions>
             <v-btn icon @click="mudarFavorito(produto.id)">
@@ -34,6 +34,11 @@
                 >mdi-heart</v-icon
               >
             </v-btn>
+            <v-btn icon
+                  @click="adicionarAoCarrinho(produto.id)"
+                >
+                  <v-icon :color="produto.carrinho ? 'primary' : 'default'"> mdi-cart-plus </v-icon>
+                </v-btn>
             <v-spacer></v-spacer>
 
             <v-btn icon @click="produto.show = !produto.show">
@@ -48,20 +53,8 @@
               <v-divider></v-divider>
 
               <v-card-text> {{ produto.descricao }} </v-card-text>
-
-              <div style="display: block; text-align: center">
-                <v-card-title> R$ {{ produto.preco.toFixed(2) }} </v-card-title>
-                <v-btn
-                  color="primary"
-                  text
-                  class="ma-1"
-                  id="add"
-                  @click="adicionarAoCarrinho(produto)"
-                >
-                  Adicionar ao carrinho
-                  <v-icon dark> mdi-cart </v-icon>
-                </v-btn>
-              </div>
+              <v-card-text style="margin-top: -30px; margin-bottom: 0;"> {{ produto.quilometragem }}km </v-card-text>
+              <v-card-subtitle style="margin-top: -30px; margin-bottom: 0;"> Cor: {{ produto.cor }}/Categoria: {{produto.categoria}} </v-card-subtitle>
             </div>
           </v-expand-transition>
         </v-card>
@@ -77,7 +70,7 @@
       produtos: [
         {
           id: 0,
-          descricao: "Honda Civic EXS 2.0 Flex",
+          descricao: "EXS 2.0 Flex",
           preco: 100.0,
           categoria: "Sedan",
           ano: 2010,
@@ -88,12 +81,13 @@
             "https://garagem360.com.br/wp-content/uploads/2021/08/ALTA20-1.jpeg",
           quilometragem: 10000.0,
           show: false,
-          favorito: true
+          favorito: false,
+          carrinho: false
         },
 
         {
           id: 1,
-          descricao: "Gol 1.0 TSI",
+          descricao: "1.0 TSI",
           preco: 100.0,
           categoria: "Hatch",
           ano: 2010,
@@ -104,11 +98,12 @@
             "https://garagem360.com.br/wp-content/uploads/2021/08/ALTA20-1.jpeg",
           quilometragem: 10000.0,
           show: false,
-          favorito: true
+          favorito: false,
+          carrinho: false
         },
         {
           id: 2,
-          descricao: "Gol 1.0 TSI",
+          descricao: "1.0 TSI",
           preco: 100.0,
           categoria: "Hatch",
           ano: 2010,
@@ -119,11 +114,12 @@
             "https://garagem360.com.br/wp-content/uploads/2021/08/ALTA20-1.jpeg",
           quilometragem: 10000.0,
           show: false,
-          favorito: true
+          favorito: false,
+          carrinho: false
         },
         {
           id: 3,
-          descricao: "Gol 1.0 TSI",
+          descricao: "1.0 TSI",
           preco: 100.0,
           categoria: "Hatch",
           ano: 2010,
@@ -134,11 +130,12 @@
             "https://garagem360.com.br/wp-content/uploads/2021/08/ALTA20-1.jpeg",
           quilometragem: 10000.0,
           show: false,
-          favorito: true
+          favorito: false,
+          carrinho: false
         },
         {
           id: 4,
-          descricao: "Gol 1.0 TSI",
+          descricao: "1.0 TSI",
           preco: 100.0,
           categoria: "Hatch",
           ano: 2010,
@@ -149,11 +146,12 @@
             "https://garagem360.com.br/wp-content/uploads/2021/08/ALTA20-1.jpeg",
           quilometragem: 10000.0,
           show: false,
-          favorito: true
+          favorito: false,
+          carrinho: false
         },
         {
           id: 5,
-          descricao: "Gol 1.0 TSI",
+          descricao: "1.0 TSI",
           preco: 100.0,
           categoria: "Hatch",
           ano: 2010,
@@ -164,7 +162,8 @@
             "https://garagem360.com.br/wp-content/uploads/2021/08/ALTA20-1.jpeg",
           quilometragem: 10000.0,
           show: false,
-          favorito: true
+          favorito: false,
+          carrinho: false
         }
       ]
     }),
@@ -180,8 +179,14 @@
         }
       },
 
-      adicionarAoCarrinho(produto) {
-        console.log(produto)
+      adicionarAoCarrinho(id) {
+        let produtoEncontrado = this.produtos.find((produto) => {
+          return produto.id == id ? true : false
+        })
+
+        if (produtoEncontrado) {
+          produtoEncontrado.carrinho = !produtoEncontrado.carrinho
+        }
       }
     }
   }
