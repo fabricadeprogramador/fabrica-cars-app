@@ -9,25 +9,17 @@
         src="https://cdn.vuetifyjs.com/images/john.jpg"
         alt="John"
       ></v-avatar>
-            <h1>Nome</h1>
+            <h1>{{cliente.nome}}</h1>
             <!-- EMAIL -->
         <h2>E-mail:</h2>
-        <label>Email</label>
+        <label>{{ cliente.usuario.email }}</label>
         <!-- Data de Nascimento -->
         <h2>Data de Nascimento:</h2>
-        <label>Data</label>
-        <!-- Gênero -->
-        <h2>Gênero</h2>
-        <label>Gênero</label>
-        <!-- Carros Anunciados -->
-        <h2>Carros Anunciados:</h2>
-        <label>0</label>
-        <!-- Carros Vendidos -->
-        <h2>Carros Vendidos:</h2>
-        <label class="d-block">0</label>
-        
+        <label>{{cliente.dataNascimento}}</label>
+            <!-- CPF -->
+        <h2>CPF</h2>
+        <label  class="d-block">{{cliente.cpf}}</label>
         <v-btn
-        @click="submit"
         color="primary"
         id="botao"
         dark
@@ -36,7 +28,6 @@
         Editar Conta
         </v-btn>
         <v-btn
-        @click="submit"
         color="red"
         id="botao"
         dark
@@ -49,8 +40,23 @@
 </template>
 
 <script>
+const axios = require('axios').default
 export default {
-    
+    data: () => ({
+        cliente: []
+    }),
+    mounted() {
+        this.clientesGet();
+    },
+    methods: {
+        async clientesGet() {
+            await axios.get(`http://localhost:3000/cliente/62a699c415ef2dcd5d3b463f`)
+                .then(async (resposta) => {
+                    this.cliente = await resposta.data
+                })
+                .catch(async (erro) => { await erro.message })
+        }
+    }
 }
 </script>
 

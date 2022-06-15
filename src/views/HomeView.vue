@@ -29,27 +29,27 @@
           <v-card-subtitle> R${{ produto.preco.toFixed(2) }} </v-card-subtitle>
 
           <v-card-actions>
-            <v-btn icon @click="mudarFavorito(produto.id)">
+            <v-btn icon @click="mudarFavorito(produto._id)">
               <v-icon :color="produto.favorito ? 'red' : 'default'"
                 >mdi-heart</v-icon
               >
             </v-btn>
             <v-btn icon
-                  @click="adicionarAoCarrinho(produto.id)"
+                  @click="adicionarAoCarrinho(produto._id)"
                 >
                   <v-icon :color="produto.carrinho ? 'primary' : 'default'"> mdi-cart-plus </v-icon>
                 </v-btn>
             <v-spacer></v-spacer>
 
-            <v-btn icon @click="produto.show = !produto.show">
+            <v-btn icon @click="produto.expandir = !produto.expandir">
               <v-icon>{{
-                produto.show ? "mdi-chevron-up" : "mdi-chevron-down"
+                produto.expandir ? "mdi-chevron-up" : "mdi-chevron-down"
               }}</v-icon>
             </v-btn>
           </v-card-actions>
 
           <v-expand-transition>
-            <div v-show="produto.show">
+            <div v-show="produto.expandir">
               <v-divider></v-divider>
 
               <v-card-text> {{ produto.descricao }} </v-card-text>
@@ -64,108 +64,14 @@
 </template>
 
 <script>
+const axios = require('axios').default
   export default {
     name: "HomeView",
+     created() {
+        this.produtosGet()
+    },
     data: () => ({
-      produtos: [
-        {
-          id: 0,
-          descricao: "EXS 2.0 Flex",
-          preco: 100.0,
-          categoria: "Sedan",
-          ano: 2010,
-          modelo: "Civic",
-          marca: "Honda",
-          cor: "Vermelho",
-          imagem:
-            "https://garagem360.com.br/wp-content/uploads/2021/08/ALTA20-1.jpeg",
-          quilometragem: 10000.0,
-          show: false,
-          favorito: false,
-          carrinho: false
-        },
-
-        {
-          id: 1,
-          descricao: "1.0 TSI",
-          preco: 100.0,
-          categoria: "Hatch",
-          ano: 2010,
-          modelo: "Gol",
-          marca: "Volkswagen",
-          cor: "Preto",
-          imagem:
-            "https://garagem360.com.br/wp-content/uploads/2021/08/ALTA20-1.jpeg",
-          quilometragem: 10000.0,
-          show: false,
-          favorito: false,
-          carrinho: false
-        },
-        {
-          id: 2,
-          descricao: "1.0 TSI",
-          preco: 100.0,
-          categoria: "Hatch",
-          ano: 2010,
-          modelo: "Gol",
-          marca: "Volkswagen",
-          cor: "Preto",
-          imagem:
-            "https://garagem360.com.br/wp-content/uploads/2021/08/ALTA20-1.jpeg",
-          quilometragem: 10000.0,
-          show: false,
-          favorito: false,
-          carrinho: false
-        },
-        {
-          id: 3,
-          descricao: "1.0 TSI",
-          preco: 100.0,
-          categoria: "Hatch",
-          ano: 2010,
-          modelo: "Gol",
-          marca: "Volkswagen",
-          cor: "Preto",
-          imagem:
-            "https://garagem360.com.br/wp-content/uploads/2021/08/ALTA20-1.jpeg",
-          quilometragem: 10000.0,
-          show: false,
-          favorito: false,
-          carrinho: false
-        },
-        {
-          id: 4,
-          descricao: "1.0 TSI",
-          preco: 100.0,
-          categoria: "Hatch",
-          ano: 2010,
-          modelo: "Gol",
-          marca: "Volkswagen",
-          cor: "Preto",
-          imagem:
-            "https://garagem360.com.br/wp-content/uploads/2021/08/ALTA20-1.jpeg",
-          quilometragem: 10000.0,
-          show: false,
-          favorito: false,
-          carrinho: false
-        },
-        {
-          id: 5,
-          descricao: "1.0 TSI",
-          preco: 100.0,
-          categoria: "Hatch",
-          ano: 2010,
-          modelo: "Gol",
-          marca: "Volkswagen",
-          cor: "Preto",
-          imagem:
-            "https://garagem360.com.br/wp-content/uploads/2021/08/ALTA20-1.jpeg",
-          quilometragem: 10000.0,
-          show: false,
-          favorito: false,
-          carrinho: false
-        }
-      ]
+      produtos: [],
     }),
     methods: {
       mudarFavorito(id) {
@@ -187,8 +93,15 @@
         if (produtoEncontrado) {
           produtoEncontrado.carrinho = !produtoEncontrado.carrinho
         }
-      }
-    }
+      },
+      async produtosGet() {
+            await axios.get('http://localhost:3000/produto')
+                .then(async (resposta) => {
+                    this.produtos = await resposta.data
+                })
+                .catch(async (erro) => { await erro.message })
+        }
+    },
   }
 </script>
 
